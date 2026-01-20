@@ -1,0 +1,24 @@
+- name: prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: install python on ubuntu
+      raw: test -e /usr/bin/python3 || (apt-get update -y && apt-get install -y python3)
+      changed_when: false
+      when: ansible_os_family is not defined or ansible_os_family == "Debian"
+
+    - name: install python on oraclelinux
+      raw: test -e /usr/bin/python3 || (dnf install -y python3)
+      changed_when: false
+      when: ansible_os_family is not defined or ansible_os_family == "RedHat"
+
+    - name: gather facts
+      setup:
+
+    - name: ensure remote tmp
+      file:
+        path: /tmp
+        state: directory
+        mode: "1777"
+      become: true
+

@@ -1,0 +1,19 @@
+---
+- name: Create
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Create molecule network
+      community.docker.docker_network:
+        name: molecule
+
+    - name: Create container
+      community.docker.docker_container:
+        name: ubuntu
+        image: ubuntu:22.04
+        command: /bin/sh -c "while true; do sleep 3600; done"
+        privileged: true
+        networks:
+          - name: molecule
+

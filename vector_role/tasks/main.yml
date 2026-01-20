@@ -1,0 +1,54 @@
+---
+- name: install deps
+  ansible.builtin.package:
+    name:
+      - ca-certificates
+      - curl
+      - tar
+      - gzip
+    state: present
+
+- name: download vector archive
+  ansible.builtin.get_url:
+    url: "{{ vector_download_url }}"
+    dest: "{{ vector_archive_path }}"
+    mode: "0644"
+    timeout: 60
+  register: vector_get_url
+  retries: 5
+  delay: 5
+  until: vector_get_url is succeeded
+
+- name: create temp dir
+  ansible.builtin.file:
+    path: "{{ vector_work_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: unpack vector archive
+  ansible.builtin.unarchive:
+    src: "{{ vector_archive_path }}"
+    dest: "{{ vector_work_dir }}"
+    remote_src: true
+
+- name: find vector binary after unarchive
+  ansible.builtin.find:
+    paths: "{{ vector_work_dir }}"
+    patterns: "^vector$"
+    use_regex: true
+    file_type: file
+    recurse: true
+  register: vector_find
+
+- name: fail if vector binary not found
+  ansible.builtin.fail:
+    msg: "Vector binary not found after unarchive in {{ vector_work_dir }}"
+  when: vector_find.matched | int == 0
+
+- name: install vector binary
+  ansible.builtin.copy:
+    src: "{{ (vector_find.files | sort(attribute='path'))[0].path }}"
+    dest: "{{ vector_install_path }}"
+    mode: "0755"
+    remote_src: true
+

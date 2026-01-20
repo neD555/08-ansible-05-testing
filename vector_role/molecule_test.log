@@ -1,0 +1,109 @@
+[35mWARNING [0m Driver docker does not provide a schema.
+[35mWARNING [0m Driver docker does not provide a schema.
+[36mINFO    [0m [32mdefault[0m ➜ [33mdiscovery[0m: scenario test matrix: destroy, create, converge, verify, destroy
+[36mINFO    [0m [32mdefault[0m ➜ [33mprerun[0m: Performing prerun with role_name_check=0...
+[35mWARNING [0m Another version of 'ansible.posix' 1.5.4 was found installed in /usr/lib/python3/dist-packages/ansible_collections, only the first one will be used, 1.5.4 (/home/Den/.ansible/collections/ansible_collections).
+[35mWARNING [0m Another version of 'community.docker' 3.7.0 was found installed in /usr/lib/python3/dist-packages/ansible_collections, only the first one will be used, 3.7.0 (/home/Den/.ansible/collections/ansible_collections).
+[36mINFO    [0m [32mdefault[0m ➜ [33mdestroy[0m: [36mExecuting[0m
+[36mINFO    [0m Sanity checks: 'docker'
+
+PLAY [Destroy] *****************************************************************
+
+TASK [Remove containers] *******************************************************
+[32mok: [localhost] => (item=oraclelinux8)[0m
+[32mok: [localhost] => (item=ubuntu)[0m
+
+TASK [Remove network] **********************************************************
+[32mok: [localhost][0m
+
+PLAY RECAP *********************************************************************
+[32mlocalhost[0m                  : [32mok=2   [0m changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[36mINFO    [0m [32mdefault[0m ➜ [33mdestroy[0m: [32mExecuted: Successful[0m
+[36mINFO    [0m [32mdefault[0m ➜ [33mcreate[0m: [36mExecuting[0m
+
+PLAY [Create] ******************************************************************
+
+TASK [Create molecule network] *************************************************
+[33mchanged: [localhost][0m
+
+TASK [Create container] ********************************************************
+[33mchanged: [localhost][0m
+
+PLAY RECAP *********************************************************************
+[33mlocalhost[0m                  : [32mok=2   [0m [33mchanged=2   [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[36mINFO    [0m [32mdefault[0m ➜ [33mcreate[0m: [32mExecuted: Successful[0m
+[36mINFO    [0m [32mdefault[0m ➜ [33mconverge[0m: [36mExecuting[0m
+
+PLAY [Converge] ****************************************************************
+
+TASK [ensure tmp exists] *******************************************************
+[32mok: [ubuntu][0m
+
+TASK [install python3 on deb] **************************************************
+[32mok: [ubuntu][0m
+
+TASK [gather facts after python install] ***************************************
+[32mok: [ubuntu][0m
+
+TASK [include vector role] *****************************************************
+
+TASK [vector_role : install deps] **********************************************
+[33mchanged: [ubuntu][0m
+
+TASK [vector_role : download vector archive] ***********************************
+[33mchanged: [ubuntu][0m
+
+TASK [vector_role : create temp dir] *******************************************
+[33mchanged: [ubuntu][0m
+
+TASK [vector_role : unpack vector archive] *************************************
+[33mchanged: [ubuntu][0m
+
+TASK [vector_role : find vector binary after unarchive] ************************
+[32mok: [ubuntu][0m
+
+TASK [vector_role : fail if vector binary not found] ***************************
+[36mskipping: [ubuntu][0m
+
+TASK [vector_role : install vector binary] *************************************
+[33mchanged: [ubuntu][0m
+
+PLAY RECAP *********************************************************************
+[33mubuntu[0m                     : [32mok=9   [0m [33mchanged=5   [0m unreachable=0    failed=0    [36mskipped=1   [0m rescued=0    ignored=0
+
+[36mINFO    [0m [32mdefault[0m ➜ [33mconverge[0m: [32mExecuted: Successful[0m
+[36mINFO    [0m [32mdefault[0m ➜ [33mverify[0m: [36mExecuting[0m
+
+PLAY [Verify] ******************************************************************
+
+TASK [vector is installed] *****************************************************
+[32mok: [ubuntu][0m
+
+TASK [show version] ************************************************************
+[32mok: [ubuntu] => {[0m
+[32m    "vector_version.stdout": "vector 0.37.1 (x86_64-unknown-linux-gnu cb6635a 2024-04-09 13:45:06.561412437)"[0m
+[32m}[0m
+
+PLAY RECAP *********************************************************************
+[32mubuntu[0m                     : [32mok=2   [0m changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[36mINFO    [0m [32mdefault[0m ➜ [33mverify[0m: [32mExecuted: Successful[0m
+[36mINFO    [0m [32mdefault[0m ➜ [33mdestroy[0m: [36mExecuting[0m
+
+PLAY [Destroy] *****************************************************************
+
+TASK [Remove containers] *******************************************************
+[32mok: [localhost] => (item=oraclelinux8)[0m
+[33mchanged: [localhost] => (item=ubuntu)[0m
+
+TASK [Remove network] **********************************************************
+[33mchanged: [localhost][0m
+
+PLAY RECAP *********************************************************************
+[33mlocalhost[0m                  : [32mok=2   [0m [33mchanged=2   [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[36mINFO    [0m [32mdefault[0m ➜ [33mdestroy[0m: [32mExecuted: Successful[0m
+[36mINFO    [0m [32mdefault[0m ➜ [33mscenario[0m: Pruning extra files from scenario ephemeral directory
+[36mINFO    [0m Molecule executed 1 scenario ([32m1 successful[0m)
